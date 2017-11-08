@@ -28,6 +28,8 @@ public class Principal extends JFrame {
     public Thread movieLoop;
     public Canvas c;
     public Pacman J1;
+    public Pacman J2;
+    public Moneda J3;
     public int[][] mundo = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     /*....................*/ {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
     /*....................*/ {1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1},
@@ -97,9 +99,13 @@ public class Principal extends JFrame {
                 }
             }
         });
-        J1 = new Pacman(32, 32, 1, 1, "PacmanSprites");
+        J1 = new Pacman(410, 460, 5, 5, "PacmanSprites");
+        J2 = new Pacman(760,60,5,5,"FantasmaSprites");
+        J3 = new Moneda();
         String[] names = {"abajo", "arriba", "derecha", "izquierda"};
         J1.loadPics(names);
+        J2.loadPics(names);
+        J3.loadPics();
         movieLoop = new Thread(new Runnable() {
 
             @Override
@@ -130,39 +136,62 @@ public class Principal extends JFrame {
                         switch (J1.currentDirection) {
                             case Pacman.RIGTH: {
 
-                                System.out.println("antes" + J1.x + "," + J1.y);
-                                if (!colision(J1.x+32, J1.y+16)) {
+                                if (!colision(J1.x + 32, J1.y + 16)) {
                                     J1.moveRigth(currentTime);
-                                System.out.println(J1.x + "," + J1.y);
                                 }
-                                
-
                                 break;
                             }
                             case Pacman.DOWN: {
-                                System.out.println("antes" + J1.x + "," + J1.y);
-                                J1.moveDown(currentTime);
-                                System.out.println(J1.x + "," + J1.y);
+                                if (!colision(J1.x + 16, J1.y + 32)) {
+                                    J1.moveDown(currentTime);
+                                }
+
                                 break;
                             }
                             case Pacman.LEFT: {
-                                System.out.println("antes" + J1.x + "," + J1.y);
-                                if (!(J1.x == 0)) {
+                                if (!colision(J1.x-1, J1.y+16)) {
                                     J1.moveLeft(currentTime);
-                                    System.out.println(J1.x + "," + J1.y);
                                 }
                                 break;
                             }
                             case Pacman.UP: {
-                                System.out.println("antes" + J1.x + "," + J1.y);
-
-                                J1.moveUp(currentTime);
-
-                                System.out.println(J1.x + "," + J1.y);
+                                if (!colision(J1.x+16,J1.y-1)) {
+                                    J1.moveUp(currentTime);
+                                }
                                 break;
                             }
                         }
                         J1.draw(g);
+                        J2.draw(g);
+                        J3.draw(g,60,55);
+                        J3.draw(g,60,105);
+                        J3.draw(g,60,155);
+                        J3.draw(g,60,205);
+                        J3.draw(g,60,255);
+                        J3.draw(g,60,305);
+                        J3.draw(g,60,355);
+                        J3.draw(g,60,405);
+                        J3.draw(g,60,455);
+                        J3.draw(g,110,455);
+                        J3.draw(g,160,455);
+                        J3.draw(g,210,455);
+                        J3.draw(g,260,455);
+                        J3.draw(g,310,455);
+                        J3.draw(g,210,405);
+                        J3.draw(g,210,355);
+                        J3.draw(g,260,355);
+                        J3.draw(g,310,355);
+                        J3.draw(g,360,355);
+                        J3.draw(g,410,355);
+                        J3.draw(g,460,355);
+                        J3.draw(g,510,355);
+                        J3.draw(g,560,355);
+                        J3.draw(g,610,355);
+                        J3.draw(g,660,355);
+                        J3.draw(g,160,355);
+                        J3.draw(g,160,305);
+                        J3.draw(g,110,305);
+                        
                         Thread.sleep(30);
                         c.getBufferStrategy().show();
                     } catch (Exception e) {
@@ -190,7 +219,6 @@ public class Principal extends JFrame {
                 new Rectangle(c.getLocationOnScreen(), new Dimension(840, 540)));
         int codigoColor = captura.getRGB(x, y);
         Color color = new Color(codigoColor);
-        System.out.println("Azul aca del pixel " + x + "," + y + " es de " + color.getBlue());
         if (color.getBlue() == 255) {
             return true;
         } else {
