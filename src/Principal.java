@@ -10,7 +10,10 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -100,7 +103,7 @@ public class Principal extends JFrame {
             }
         });
         J1 = new Pacman(410, 460, 5, 5, "PacmanSprites");
-        J2 = new Pacman(760,60,5,5,"FantasmaSprites");
+        J2 = new Pacman(760, 60, 5, 5, "FantasmaSprites");
         J3 = new Moneda();
         String[] names = {"abajo", "arriba", "derecha", "izquierda"};
         J1.loadPics(names);
@@ -149,13 +152,13 @@ public class Principal extends JFrame {
                                 break;
                             }
                             case Pacman.LEFT: {
-                                if (!colision(J1.x-1, J1.y+16)) {
+                                if (!colision(J1.x - 1, J1.y + 16)) {
                                     J1.moveLeft(currentTime);
                                 }
                                 break;
                             }
                             case Pacman.UP: {
-                                if (!colision(J1.x+16,J1.y-1)) {
+                                if (!colision(J1.x + 16, J1.y - 1)) {
                                     J1.moveUp(currentTime);
                                 }
                                 break;
@@ -163,35 +166,8 @@ public class Principal extends JFrame {
                         }
                         J1.draw(g);
                         J2.draw(g);
-                        J3.draw(g,60,55);
-                        J3.draw(g,60,105);
-                        J3.draw(g,60,155);
-                        J3.draw(g,60,205);
-                        J3.draw(g,60,255);
-                        J3.draw(g,60,305);
-                        J3.draw(g,60,355);
-                        J3.draw(g,60,405);
-                        J3.draw(g,60,455);
-                        J3.draw(g,110,455);
-                        J3.draw(g,160,455);
-                        J3.draw(g,210,455);
-                        J3.draw(g,260,455);
-                        J3.draw(g,310,455);
-                        J3.draw(g,210,405);
-                        J3.draw(g,210,355);
-                        J3.draw(g,260,355);
-                        J3.draw(g,310,355);
-                        J3.draw(g,360,355);
-                        J3.draw(g,410,355);
-                        J3.draw(g,460,355);
-                        J3.draw(g,510,355);
-                        J3.draw(g,560,355);
-                        J3.draw(g,610,355);
-                        J3.draw(g,660,355);
-                        J3.draw(g,160,355);
-                        J3.draw(g,160,305);
-                        J3.draw(g,110,305);
-                        
+                        DrawCoins(g);
+
                         Thread.sleep(30);
                         c.getBufferStrategy().show();
                     } catch (Exception e) {
@@ -200,6 +176,28 @@ public class Principal extends JFrame {
                 }
             }
         });
+    }
+
+    public void DrawCoins(Graphics g) throws FileNotFoundException, IOException {
+        // Create a file
+        File f;
+        f = new File("Monedas.txt");
+
+        // Create necesary objects
+        FileReader fr = new FileReader(f);
+        BufferedReader br = new BufferedReader(fr);
+
+        // In 'line' we save a file's line and write in console
+        String line;
+        while (br.ready()) {
+            line = br.readLine();
+            String [] Coord = line.split(",");
+            J3.draw(g, Integer.parseInt(Coord[0]), Integer.parseInt(Coord[1]));
+        }
+
+        // Close all
+        br.close();
+        fr.close();
     }
 
     public static void main() {
