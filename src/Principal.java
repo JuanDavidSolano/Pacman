@@ -379,15 +379,15 @@ public class Principal extends JFrame {
         System.out.println("x " + x + ",y " + y + " FANTASMA");
         System.out.println("x " + obj.getPosx() + ",y " + obj.posy + " OBJETIVO");
         if (x < obj.getPosx()) {
-            return 1;
+            return Pacman.RIGTH;
         } else {
             if (x > obj.getPosx()) {
-                return 2;
+                return Pacman.LEFT;
             } else {
                 if (y > obj.getPosy()) {
-                    return 4;
+                    return Pacman.UP;
                 } else {
-                    return 3;
+                    return Pacman.DOWN;
                 }
             }
         }
