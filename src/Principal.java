@@ -48,7 +48,6 @@ import sun.audio.*;
  */
 public class Principal extends JFrame {
 
-    public boolean sonando = false;
     public int score = 0;
     public int tiempo = 0;
     public static int whereis = 0;
@@ -90,7 +89,7 @@ public class Principal extends JFrame {
             }
 
             @Override
-            public void keyPressed(KeyEvent e) {
+            public void keyPressed(KeyEvent e) {//SI SE PRESIONA LA TECLA ENTONCES EL PACMAN CAMBIA SU DIRECCION Y SE MUEVE
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_UP: {
                         J1.currentDirection = Pacman.UP;
@@ -112,36 +111,32 @@ public class Principal extends JFrame {
             }
 
             @Override
-            public void keyReleased(KeyEvent e) {
+            public void keyReleased(KeyEvent e) { //SI SE SUELTA LA TECLA EL PACMAN CAMBIA SU DIRECCION A NONE Y DEJA DE MOVERSE
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_UP: {
                         J1.currentDirection = Pacman.NONE;
-                        sonando = false;
                         break;
                     }
                     case KeyEvent.VK_DOWN: {
                         J1.currentDirection = Pacman.NONE;
-                        sonando = false;
                         break;
                     }
                     case KeyEvent.VK_LEFT: {
                         J1.currentDirection = Pacman.NONE;
-                        sonando = false;
                         break;
                     }
                     case KeyEvent.VK_RIGHT: {
                         J1.currentDirection = Pacman.NONE;
-                        sonando = false;
                         break;
                     }
                 }
             }
         });
-        J1 = new Pacman(610, 360, 10, 10, "PacmanSprites");
-        J2 = new Pacman(460, 660, 5, 5, "FantasmaSprites");
-        String[] names = {"abajo", "arriba", "derecha", "izquierda"};
-        J1.loadPics(names);
-        J2.loadPics(names);
+        J1 = new Pacman(610, 360, 10, 10, "PacmanSprites"); //Creo el pacman posx,posy,velx,vely, sprites
+        J2 = new Pacman(460, 660, 5, 5, "FantasmaSprites"); //Creo el fantasma posx,posy,velx,vely,sprites
+        String[] names = {"abajo", "arriba", "derecha", "izquierda"};//posibles movimientos
+        J1.loadPics(names);//Cargo los sprites
+        J2.loadPics(names);//Cargo los sprites
         movieLoop = new Thread(new Runnable() {
 
             @Override
@@ -165,42 +160,40 @@ public class Principal extends JFrame {
                                     g.fillRect(50 * j, 50 * i, 50, 50);
                                 }
                             }
-                        }
+                        }//SE CREA EL MUNDO
                         g.setColor(Color.white);
                         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-                        g.drawString("SCORE:" + score, 45, 45);
+                        g.drawString("SCORE:" + score, 45, 45);//SE DIBUJA EL SCORE
                         currentTime = System.currentTimeMillis() - startTime;
-                        whereis = whereIs(J1.x, J1.y);
-                        moveEnemy();
-                        tiempo++;
+                        whereis = whereIs(J1.x, J1.y);//BUSCO DONDE ESTA EL PACMAN
+                        moveEnemy();//MUEVO EL FANTASMA
+                        tiempo++;//AUMENTO MI CONTADOR DE SEGUNDOS
                         if (tiempo == 50) {
                             score++;
                             tiempo = 0;
-                        }
-                        switch (J1.currentDirection) {
+                        }   //SUMO 1 PUNTO CADA SEGUNDO
+                        switch (J1.currentDirection) {//ESTE SW ES PARA MOVER EL PACMAN
                             case Pacman.RIGTH: {
-                                if (!colision(J1.x + 32, J1.y + 16)) {
-                                    playSound();
-                                    sonando = true;
+                                if (!colision(J1.x + 32, J1.y + 16)) {//REVISO SI ES POSIBLE MOVERSE
                                     J1.moveRigth(currentTime);
                                 }
                                 break;
                             }
                             case Pacman.DOWN: {
-                                if (!colision(J1.x + 16, J1.y + 32)) {
+                                if (!colision(J1.x + 16, J1.y + 32)) {//REVISO SI ES POSIBLE MOVERSE
                                     J1.moveDown(currentTime);
                                 }
 
                                 break;
                             }
                             case Pacman.LEFT: {
-                                if (!colision(J1.x - 1, J1.y + 16)) {
+                                if (!colision(J1.x - 1, J1.y + 16)) {//REVISO SI ES POSIBLE MOVERSE
                                     J1.moveLeft(currentTime);
                                 }
                                 break;
                             }
                             case Pacman.UP: {
-                                if (!colision(J1.x + 16, J1.y - 1)) {
+                                if (!colision(J1.x + 16, J1.y - 1)) {//REVISO SI ES POSIBLE MOVERSE
                                     J1.moveUp(currentTime);
                                 }
                                 break;
@@ -221,10 +214,6 @@ public class Principal extends JFrame {
         });
     }
 
-    public void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-
-    }
-
     public void DrawCoins(Graphics g) throws FileNotFoundException, IOException {
         try {
             for (Node node : coins) {
@@ -234,6 +223,7 @@ public class Principal extends JFrame {
         } catch (Exception e) {
         }
         //Esto no va aca
+        //ACTIVAR ESTO PARA VER EL GRAFO
 //        try {
 //            for (Node node : nodes) {
 //                g.setColor(node.getColor());
@@ -253,11 +243,11 @@ public class Principal extends JFrame {
 
     }
 
-    public static void CreateGraph() throws FileNotFoundException, IOException {
+    public static void CreateGraph() throws FileNotFoundException, IOException {//CREO EL GRAFO POR MEDIO DE FILES
         Color color = Color.yellow;
         // Create a file
         File f;
-        f = new File("nodes.txt"); //BUSCO EL ARCHIVO
+        f = new File("nodes.txt"); //BUSCO EL ARCHIVO QUE CONTIENE LOS NODOS
         System.out.println(f.getAbsolutePath());
         try {
             FileReader fr = new FileReader(f);
@@ -267,11 +257,11 @@ public class Principal extends JFrame {
                 line = br.readLine();
                 String[] Node = line.split(",");
                 nodes.add(new Node(Integer.parseInt(Node[0]), Integer.parseInt(Node[1]), Integer.parseInt(Node[2]), color));
-            }
+            } //CREO EL NODO Y LO AGREGO A EL ARRAYLIST
             br.close();
         } catch (Exception e) {
         }
-        f = new File("edges.txt"); //BUSCO EL ARCHIVO
+        f = new File("edges.txt"); //BUSCO EL ARCHIVO QUE CONTIENE LAS ARISTAS
         System.out.println(f.getAbsolutePath());
         try {
             FileReader fr = new FileReader(f);
@@ -281,13 +271,14 @@ public class Principal extends JFrame {
                 line = br.readLine();
                 String[] Node = line.split("-");
                 edges.add(new Edge(Integer.parseInt(Node[0]), Integer.parseInt(Node[1]), Integer.parseInt(Node[2]), Integer.parseInt(Node[3]), Integer.parseInt(Node[4]), Integer.parseInt(Node[5]), 1, Color.white));
+                //CREO LA ARISTA Y LA METO EN EL ARRAYLIST
             }
             br.close();
         } catch (Exception e) {
         }
     }
 
-    public static void CreateCoins() {
+    public static void CreateCoins() {//CREO LAS MONEDAS Y LAS METO EN UN ARRAY
         coins.add(new Node(1, 60, 160, Color.green));
         coins.add(new Node(2, 560, 60, Color.green));
         coins.add(new Node(3, 260, 360, Color.green));
@@ -302,27 +293,27 @@ public class Principal extends JFrame {
 
     public static void main() {
         try {
-            coins = new ArrayList<Node>();
+            coins = new ArrayList<Node>();//inicio los array
             nodes = new ArrayList<Node>();
             edges = new ArrayList<Edge>();
-            CreateCoins();
-            CreateGraph();
-            Principal p = new Principal(1260, 780);
-            p.setLocationRelativeTo(null);
+            CreateCoins();//invoco crear monedas
+            CreateGraph();//invoco crear grafo
+            Principal p = new Principal(1260, 780);//INICIO MI JFRAME
+            p.setLocationRelativeTo(null);//CENTRO EL JFRAME
             p.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            p.setUndecorated(true);
+            p.setUndecorated(true);//LE COLOCO UNDECORATED
             p.setVisible(true);
-            p.movieLoop.start();
+            p.movieLoop.start();//INICIO EL HILO
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public int findNode(int x, int y) {
+    public int findNode(int x, int y) {//METODO PARA BUSCAR LA MONEDA QUE AGARRE
         int min = 99999999;
         int minN = 0;
         int dist;
-        for (Node coin : coins) {
+        for (Node coin : coins) {//CALCULO LA DISTANCIA CON TODAS LAS MONEDAS Y LA MAS CORTA ES LA QUE ME COMO
             dist = (int) (Math.sqrt(Math.pow(coin.getPosx() - x, 2) + Math.pow(coin.getPosy() - y, 2)));
             if (dist < min) {
                 min = dist;
@@ -332,7 +323,7 @@ public class Principal extends JFrame {
         return minN;
     }
 
-    public void moveEnemy() {
+    public void moveEnemy() {//METODO PARA MOVER A EL ENEMIGO
         camino = null;
         int V, E, origen, destino, peso, inicial;
         V = 69;//Numero de vertices
@@ -341,10 +332,10 @@ public class Principal extends JFrame {
         for (Edge edge : edges) {
             dijkstraAlgorithm.addEdge(edge.getNinicial(), edge.getNfinal(), edge.getPeso(), false);
         }
-        dijkstraAlgorithm.dijkstra(whereIs(J2.x, J2.y));
-        dijkstraAlgorithm.printShortestPath();
+        dijkstraAlgorithm.dijkstra(whereIs(J2.x, J2.y));//EJECUTO MI DIJKSTRA (int Ininio)
+        dijkstraAlgorithm.printShortestPath();//ESCRIBO EN CONSOLA EL CAMINO
         try {
-            switch (verifDireccion(J2.x, J2.y)) {
+            switch (verifDireccion(J2.x, J2.y)) {//VERIFICO HACIA DONDE DEBE MOVERSE EL FANTASMA Y LO MUEVO
                 case 1:
                     J2.moveUp(currentTime);
                     System.out.println("ARRIBA");
@@ -367,18 +358,22 @@ public class Principal extends JFrame {
 
     }
 
-    public int verifDireccion(int x, int y) {
+    public int verifDireccion(int x, int y) {//METODO PARA VERIFICAR HACIA DONDE DEBE MOVERSE EL FANTASMA
+        /*TENGO UN GRAN PROBLEMA YA QUE COMO DECIDO MI INICIO DEPENDIENDO DE EL NODO MAS CERCANO ENTONCES AL 
+        MOVER EL FANTASMA ENTRE VARIOS NODOS NO IMPORTAN LAS PAREDES Y SE PUEDE IR A OTRO NODO QUE ESTE MAS 
+        CERCA AUNQUE SEA INALCANSABLE*/
         String[] linea = camino.split("-");
         Node obj = null;
         for (Node node : nodes) {
-            if (Integer.parseInt(linea[1]) == node.getName()) {
+            if (Integer.parseInt(linea[1]) == node.getName()) {//BUSCO EL NODO OBJETIVO, OSEA EL SIGUIENTE MOVIMIENTO
                 obj = node;
+                break;
             }
         }
         System.out.println(obj.getName());
         System.out.println("x " + x + ",y " + y + " FANTASMA");
         System.out.println("x " + obj.getPosx() + ",y " + obj.posy + " OBJETIVO");
-        if (x < obj.getPosx()) {
+        if (x < obj.getPosx()) {//DEPENDIENDO DE LAS POSICIONES DECIDO A DONDE MOVERME
             return Pacman.RIGTH;
         } else {
             if (x > obj.getPosx()) {
@@ -393,11 +388,14 @@ public class Principal extends JFrame {
         }
     }
 
-    public int whereIs(int x, int y) {
+    public int whereIs(int x, int y) {//ESTE METODO LO USO PARA SABER TANTO LA POSICION DE EL PACMAN Y LA POSICION DE EL FANTASMA
+        /*ESTE METODO SE DEBE MEJORAR YA QUE TIENE UN ERROR AL MOVER EL FANTASMA, EXPLICO EL PROBLEMA EN LA LINEA 367*/
+
         int min = 99999999;
         int minN = 0;
         int dist;
         for (Node coin : nodes) {
+            /*SELECCIONO EL NODO MAS CERCANO SIN IMPORTAR LAS PAREDES!!!*/
             dist = (int) (Math.sqrt(Math.pow(coin.getPosx() - x, 2) + Math.pow(coin.getPosy() - y, 2)));
             if (dist < min) {
                 min = dist;
@@ -407,41 +405,41 @@ public class Principal extends JFrame {
         return minN;
     }
 
-    public void removeCoin(int objetivo) {
+    public void removeCoin(int objetivo) {//ESTE METODO ELIMINA LA MONEDA QUE ME VAYA COMIENDO
         Node coinObj = null;
         for (Node coin : coins) {
-            if (objetivo == coin.getName()) {
+            if (objetivo == coin.getName()) {//BUSCO EL NOMBRE DE LA MONEDA
                 coinObj = coin;
             }
         }
-        if (coinObj != null) {
+        if (coinObj != null) {//SI HAY MONEDA ENTONCES LA ELIMINO Y SUMO PUNTAJE
             coins.remove(coinObj);
             score = score + 10;
         }
-        if (coins.size() == 0) {
+        if (coins.size() == 0) {//SI NO HAY MONEDAS EN EL ARRAYLIST SIGNIFICA QUE LAS AGARRE TODAS Y GANO
             Win win = new Win();
-            win.setVisible(true);
+            win.setVisible(true);//MUESTRO VENTANA DE WIN
             Win.Scorelbl.setText("SCORE:" + score);
             this.dispose();
         }
 
     }
 
-    public boolean colision(int x, int y) throws AWTException {
+    public boolean colision(int x, int y) throws AWTException {//ESTE METODO CALCULA LAS COLISIONES DE EL PACMAN
         try {
-            BufferedImage captura = new Robot().createScreenCapture(
-                    new Rectangle(c.getLocationOnScreen(), new Dimension(1260, 780)));
-            int codigoColor = captura.getRGB(x, y);
-            Color color = new Color(codigoColor);
-            if (color.getBlue() == 255) {
-                return true;
-            } else {
-                if (color.getGreen() == 255) {
-                    int xyz = findNode(x, y);
-                    removeCoin(xyz);
+            BufferedImage captura = new Robot().createScreenCapture(//CREO LA CAPTURA DE PANTALLA, SOLO TOMARA LA PARTE DE EL JUEGO
+                    new Rectangle(c.getLocationOnScreen(), new Dimension(1260, 780)));//ESTO DEBIDO A LOS PARAMETROS
+            int codigoColor = captura.getRGB(x, y);//OBTENGO EL COLOR EN RGB DE LA POSICION X Y QUE ES LA DE EL PACMAN
+            Color color = new Color(codigoColor);//CREO EL COLOR USANDO EL CODIGO RGB ANTES OBTENIDO
+            if (color.getBlue() == 255) {//VERIFICO SI ES AZUL
+                return true;//RETORNO TRUE Y NO SE MUEVE
+            } else {//SI NO ES AZUL
+                if (color.getGreen() == 255) {//SI ES VERDE SE PUEDE MOVER PERO INICIO EL PROCESO DE ELIMINAR MONEDA
+                    int coinObj = findNode(x, y);
+                    removeCoin(coinObj);
                     return false;
                 } else {
-                    return false;
+                    return false;//SI NO ES NADA ENTONCES SE PUEDE MOVER NORMAL
                 }
 
             }
