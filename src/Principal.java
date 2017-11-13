@@ -234,13 +234,13 @@ public class Principal extends JFrame {
         } catch (Exception e) {
         }
         //Esto no va aca
-//        try {
-//            for (Node node : nodes) {
-//                g.setColor(node.getColor());
-//                g.fillOval(node.getPosx(), node.getPosy(), 15, 15);
-//            }
-//        } catch (Exception e) {
-//        }
+        try {
+            for (Node node : nodes) {
+                g.setColor(node.getColor());
+                g.fillOval(node.getPosx(), node.getPosy(), 15, 15);
+            }
+        } catch (Exception e) {
+        }
 //        try {
 //            Graphics2D g2 = (Graphics2D) g;
 //            g2.setStroke(new BasicStroke(5));
@@ -343,6 +343,27 @@ public class Principal extends JFrame {
         }
         dijkstraAlgorithm.dijkstra(whereIs(J2.x, J2.y));
         dijkstraAlgorithm.printShortestPath();
+        try {
+            switch (verifDireccion(J2.x, J2.y)) {
+                case 1:
+                    J2.moveUp(currentTime);
+                    System.out.println("ARRIBA");
+                    break;
+                case 2:
+                    J2.moveDown(currentTime);
+                    System.out.println("ABAJO");
+                    break;
+                case 3:
+                    J2.moveRigth(currentTime);
+                    System.out.println("DERECHA");
+                    break;
+                case 4:
+                    J2.moveLeft(currentTime);
+                    System.out.println("IZQ");
+                    break;
+            }
+        } catch (Exception e) {
+        }
 
     }
 
