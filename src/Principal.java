@@ -1,10 +1,12 @@
 
 import java.awt.AWTException;
+import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -308,8 +310,8 @@ public class Principal extends JFrame {
     public void moveEnemy() {//METODO PARA MOVER A EL ENEMIGO
         camino = null;
         int V, E, origen, destino, peso, inicial;
-        V = 69;//Numero de vertices
-        E = 89;//Numero de aristas
+        V = 186;//Numero de vertices
+        E = 197;//Numero de aristas
         Dijkstra dijkstraAlgorithm = new Dijkstra(V);
         for (Edge edge : edges) {
             dijkstraAlgorithm.addEdge(edge.getNinicial(), edge.getNfinal(), edge.getPeso(), false);
