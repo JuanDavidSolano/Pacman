@@ -185,7 +185,7 @@ public class Principal extends JFrame {
                         }
                         J1.draw(g);
                         J2.draw(g);
-
+                        g.drawOval(J2.x, J2.y, 10, 10);
                         DrawCoins(g);
 
                         Thread.sleep(30);
@@ -220,11 +220,11 @@ public class Principal extends JFrame {
 //            g2.setStroke(new BasicStroke(5));
 //            for (Edge edge : edges) {
 //                g.setColor(edge.getColor());
-//                g2.drawLine(edge.getX1(), edge.getY1(), edge.getX2(), edge.getY2());
+//                g2.drawLine(edge.getX1()+7, edge.getY1()+7, edge.getX2()+7, edge.getY2()+7);
 //            }
 //        } catch (Exception e) {
 //        }
-
+        
     }
 
     public static void CreateGraph() throws FileNotFoundException, IOException {//CREO EL GRAFO POR MEDIO DE FILES
@@ -358,13 +358,17 @@ public class Principal extends JFrame {
         System.out.println(obj.getName());
         System.out.println("x " + x + ",y " + y + " FANTASMA");
         System.out.println("x " + obj.getPosx() + ",y " + obj.posy + " OBJETIVO");
-        if (x < obj.getPosx()) {//DEPENDIENDO DE LAS POSICIONES DECIDO A DONDE MOVERME
+        int distx=Math.abs(x-obj.getPosx());
+        int disty=Math.abs(y-obj.getPosy());
+        System.out.println("Distancia x"+distx);
+        System.out.println("Distancia y"+disty);
+        if (x < obj.getPosx()&&distx>disty) {//DEPENDIENDO DE LAS POSICIONES DECIDO A DONDE MOVERME
             return Pacman.RIGTH;
         } else {
-            if (x > obj.getPosx()) {
+            if (x > obj.getPosx()&&distx>disty) {
                 return Pacman.LEFT;
             } else {
-                if (y > obj.getPosy()) {
+                if (y > obj.getPosy()&&disty>distx) {
                     return Pacman.UP;
                 } else {
                     if (y<obj.getPosy()) {
@@ -380,7 +384,6 @@ public class Principal extends JFrame {
 
     public int whereIs(int x, int y) {//ESTE METODO LO USO PARA SABER TANTO LA POSICION DE EL PACMAN Y LA POSICION DE EL FANTASMA
         /*ESTE METODO SE DEBE MEJORAR YA QUE TIENE UN ERROR AL MOVER EL FANTASMA, EXPLICO EL PROBLEMA EN LA LINEA 367*/
-
         int min = 99999999;
         int minN = 0;
         int dist;
