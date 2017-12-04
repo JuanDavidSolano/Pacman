@@ -192,7 +192,7 @@ public class Principal extends JFrame {
                         }
                         J1.draw(g);
                         J2.draw(g);
-                        g.drawOval(J2.x, J2.y, 10, 10);
+                        
                         DrawCoins(g);
                         Thread.sleep(30);
                         c.getBufferStrategy().show();
